@@ -1,5 +1,6 @@
 package org.juan.domain;
 
+
 import jakarta.persistence.*;
 
 @Entity
@@ -13,18 +14,22 @@ public class Mascota {
     private String nombre;
 
     @Column(nullable = false)
-    private int edad;
+    private String tipo;
 
-    // Constructores, getters y setters
-    public Mascota() {}
+    public Mascota() {
+    }
 
-    public Mascota(String nombre, int edad) {
+    public Mascota(String nombre, String tipo) {
         this.nombre = nombre;
-        this.edad = edad;
+        this.tipo = tipo;
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -35,18 +40,16 @@ public class Mascota {
         this.nombre = nombre;
     }
 
-    public int getEdad() {
-        return edad;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setEdad(int edad) {
-        this.edad = edad;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     @Override
     public String toString() {
-        return "Mascota [id=" + id + ", nombre=" + nombre + ", edad=" + edad + "]";
+        return "Mascota{id=" + id + ", nombre='" + nombre + "', tipo='" + tipo + "'}";
     }
 }
-
-

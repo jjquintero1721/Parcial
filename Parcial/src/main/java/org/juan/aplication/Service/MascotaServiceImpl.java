@@ -6,6 +6,7 @@ import org.juan.domain.Mascota;
 import org.juan.interfaces.MascotaRepository;
 import java.util.List;
 
+
 public class MascotaServiceImpl implements MascotaService {
     private final MascotaRepository mascotaRepository;
 
@@ -19,16 +20,6 @@ public class MascotaServiceImpl implements MascotaService {
     }
 
     @Override
-    public Mascota obtenerMascotaPorId(int id) {
-        return mascotaRepository.buscarPorId(id);
-    }
-
-    @Override
-    public List<Mascota> obtenerTodasLasMascotas() {
-        return mascotaRepository.listarTodas();
-    }
-
-    @Override
     public void modificarMascota(Mascota mascota) {
         mascotaRepository.actualizar(mascota);
     }
@@ -37,7 +28,14 @@ public class MascotaServiceImpl implements MascotaService {
     public void eliminarMascota(int id) {
         mascotaRepository.eliminar(id);
     }
+
+    @Override
+    public Mascota buscarMascota(int id) {
+        return mascotaRepository.obtenerPorId(id);
+    }
+
+    @Override
+    public List<Mascota> listarMascotas() {
+        return mascotaRepository.obtenerTodas();
+    }
 }
-
-
-
