@@ -1,0 +1,1 @@
+profesor arle para ver el punto 1 le tiene que dar en donde dice commits abajo del cuadrado verde que dice code y tambien me toco poner la correcion ya que el punto 2 que se subio primero se subio incompleto
