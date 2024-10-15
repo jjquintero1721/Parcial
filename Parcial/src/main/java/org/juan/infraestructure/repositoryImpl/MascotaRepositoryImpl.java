@@ -1,66 +1,64 @@
 package org.juan.infraestructure.repositoryImpl;
 
+import jakarta.persistence.*;
 import org.juan.domain.Mascota;
 import org.juan.interfaces.MascotaRepository;
 
-import java.io.*;
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.util.List;
 
 public class MascotaRepositoryImpl implements MascotaRepository {
-    private static final String ARCHIVO = "mascotas.dat";
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("MascotaPU");
 
     @Override
     public void guardar(Mascota mascota) {
-        List<Mascota> mascotas = listarTodas();
-        mascotas.add(mascota);
-        guardarEnArchivo(mascotas);
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        em.persist(mascota);
+        tx.commit();
+        em.close();
     }
 
     @Override
     public Mascota buscarPorId(int id) {
-        for (Mascota mascota : listarTodas()) {
-            if (mascota.getId() == id) {
-                return mascota;
-            }
-        }
-        return null;
+        EntityManager em = emf.createEntityManager();
+        Mascota mascota = em.find(Mascota.class, id);
+        em.close();
+        return mascota;
     }
 
     @Override
     public List<Mascota> listarTodas() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ARCHIVO))) {
-            return (List<Mascota>) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            return new ArrayList<>();
-        }
+        EntityManager em = emf.createEntityManager();
+        List<Mascota> mascotas = em.createQuery("SELECT m FROM Mascota m", Mascota.class).getResultList();
+        em.close();
+        return mascotas;
     }
 
     @Override
     public void actualizar(Mascota mascota) {
-        List<Mascota> mascotas = listarTodas();
-        for (int i = 0; i < mascotas.size(); i++) {
-            if (mascotas.get(i).getId() == mascota.getId()) {
-                mascotas.set(i, mascota);
-                break;
-            }
-        }
-        guardarEnArchivo(mascotas);
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        em.merge(mascota);
+        tx.commit();
+        em.close();
     }
 
     @Override
     public void eliminar(int id) {
-        List<Mascota> mascotas = listarTodas();
-        mascotas.removeIf(m -> m.getId() == id);
-        guardarEnArchivo(mascotas);
-    }
-
-    private void guardarEnArchivo(List<Mascota> mascotas) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO))) {
-            oos.writeObject(mascotas);
-        } catch (IOException e) {
-            e.printStackTrace();
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Mascota mascota = em.find(Mascota.class, id);
+        if (mascota != null) {
+            em.remove(mascota);
         }
+        tx.commit();
+        em.close();
     }
 }
-

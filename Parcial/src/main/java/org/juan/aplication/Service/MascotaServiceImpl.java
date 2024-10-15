@@ -1,8 +1,9 @@
 package org.juan.aplication.Service;
 
-import org.juan.interfaces.MascotaRepository;
-import org.juan.domain.Mascota;
 
+
+import org.juan.domain.Mascota;
+import org.juan.interfaces.MascotaRepository;
 import java.util.List;
 
 public class MascotaServiceImpl implements MascotaService {
@@ -37,4 +38,6 @@ public class MascotaServiceImpl implements MascotaService {
         mascotaRepository.eliminar(id);
     }
 }
+
+
 

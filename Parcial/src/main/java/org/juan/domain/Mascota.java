@@ -1,27 +1,30 @@
 package org.juan.domain;
 
-import java.io.Serializable;
+import jakarta.persistence.*;
 
-public class Mascota implements Serializable {
-    private static final long serialVersionUID = 1L;
-
+@Entity
+@Table(name = "mascotas")
+public class Mascota {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(nullable = false)
     private String nombre;
+
+    @Column(nullable = false)
     private int edad;
 
-    public Mascota(int id, String nombre, int edad) {
-        this.id = id;
+    // Constructores, getters y setters
+    public Mascota() {}
+
+    public Mascota(String nombre, int edad) {
         this.nombre = nombre;
         this.edad = edad;
     }
 
-    // Getters y Setters
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNombre() {
@@ -45,4 +48,5 @@ public class Mascota implements Serializable {
         return "Mascota [id=" + id + ", nombre=" + nombre + ", edad=" + edad + "]";
     }
 }
+
 

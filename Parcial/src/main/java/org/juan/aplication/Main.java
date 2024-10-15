@@ -1,11 +1,12 @@
 package org.juan.aplication;
 
-import org.juan.infraestructure.repositoryImpl.MascotaRepositoryImpl;
+
+
+import org.juan.domain.Mascota;
 import org.juan.aplication.Service.MascotaService;
 import org.juan.aplication.Service.MascotaServiceImpl;
-import org.juan.domain.Mascota;
+import org.juan.infraestructure.repositoryImpl.MascotaRepositoryImpl;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -18,7 +19,7 @@ public class Main {
         while (continuar) {
             mostrarMenu();
             int opcion = scanner.nextInt();
-            scanner.nextLine(); // Consumir la nueva línea
+            scanner.nextLine(); // Consumir nueva línea
 
             switch (opcion) {
                 case 1 -> registrarMascota();
@@ -27,102 +28,85 @@ public class Main {
                 case 4 -> actualizarMascota();
                 case 5 -> eliminarMascota();
                 case 6 -> {
-                    System.out.println("Saliendo del sistema...");
+                    System.out.println("Saliendo...");
                     continuar = false;
                 }
-                default -> System.out.println("Opción no válida. Intente nuevamente.");
+                default -> System.out.println("Opción no válida.");
             }
         }
     }
 
     private static void mostrarMenu() {
-        System.out.println("\n--- Gestión de Mascotas ---");
+        System.out.println("\n--- Menú ---");
         System.out.println("1. Registrar mascota");
-        System.out.println("2. Obtener mascota por ID");
-        System.out.println("3. Listar todas las mascotas");
+        System.out.println("2. Buscar mascota por ID");
+        System.out.println("3. Listar mascotas");
         System.out.println("4. Actualizar mascota");
         System.out.println("5. Eliminar mascota");
         System.out.println("6. Salir");
-        System.out.print("Seleccione una opción: ");
+        System.out.print("Elija una opción: ");
     }
 
     private static void registrarMascota() {
-        System.out.print("Ingrese el ID de la mascota: ");
-        int id = scanner.nextInt();
-        scanner.nextLine(); // Consumir la nueva línea
-
-        System.out.print("Ingrese el nombre de la mascota: ");
+        System.out.print("Ingrese el nombre: ");
         String nombre = scanner.nextLine();
 
-        System.out.print("Ingrese la edad de la mascota: ");
+        System.out.print("Ingrese la edad: ");
         int edad = scanner.nextInt();
-        scanner.nextLine(); // Consumir la nueva línea
 
-        Mascota mascota = new Mascota(id, nombre, edad);
+        Mascota mascota = new Mascota(nombre, edad);
         mascotaService.registrarMascota(mascota);
-        System.out.println("Mascota registrada exitosamente.");
+        System.out.println("Mascota registrada.");
     }
 
     private static void obtenerMascotaPorId() {
-        System.out.print("Ingrese el ID de la mascota a buscar: ");
+        System.out.print("Ingrese el ID: ");
         int id = scanner.nextInt();
-        scanner.nextLine(); // Consumir la nueva línea
 
         Mascota mascota = mascotaService.obtenerMascotaPorId(id);
         if (mascota != null) {
-            System.out.println("Mascota encontrada: " + mascota);
+            System.out.println(mascota);
         } else {
-            System.out.println("No se encontró una mascota con el ID proporcionado.");
+            System.out.println("Mascota no encontrada.");
         }
     }
 
     private static void listarTodasLasMascotas() {
-        List<Mascota> mascotas = mascotaService.obtenerTodasLasMascotas();
-        if (mascotas.isEmpty()) {
-            System.out.println("No hay mascotas registradas.");
-        } else {
-            System.out.println("Listado de todas las mascotas:");
-            mascotas.forEach(System.out::println);
-        }
+        mascotaService.obtenerTodasLasMascotas().forEach(System.out::println);
     }
 
     private static void actualizarMascota() {
-        System.out.print("Ingrese el ID de la mascota a actualizar: ");
+        System.out.print("Ingrese el ID: ");
         int id = scanner.nextInt();
-        scanner.nextLine(); // Consumir la nueva línea
+        scanner.nextLine();
+
+        System.out.print("Nuevo nombre: ");
+        String nombre = scanner.nextLine();
+
+        System.out.print("Nueva edad: ");
+        int edad = scanner.nextInt();
 
         Mascota mascota = mascotaService.obtenerMascotaPorId(id);
         if (mascota != null) {
-            System.out.print("Ingrese el nuevo nombre de la mascota: ");
-            String nombre = scanner.nextLine();
-
-            System.out.print("Ingrese la nueva edad de la mascota: ");
-            int edad = scanner.nextInt();
-            scanner.nextLine(); // Consumir la nueva línea
-
             mascota.setNombre(nombre);
             mascota.setEdad(edad);
             mascotaService.modificarMascota(mascota);
-
-            System.out.println("Mascota actualizada exitosamente.");
+            System.out.println("Mascota actualizada.");
         } else {
-            System.out.println("No se encontró una mascota con el ID proporcionado.");
+            System.out.println("Mascota no encontrada.");
         }
     }
 
     private static void eliminarMascota() {
-        System.out.print("Ingrese el ID de la mascota a eliminar: ");
+        System.out.print("Ingrese el ID: ");
         int id = scanner.nextInt();
-        scanner.nextLine(); // Consumir la nueva línea
 
         Mascota mascota = mascotaService.obtenerMascotaPorId(id);
         if (mascota != null) {
             mascotaService.eliminarMascota(id);
-            System.out.println("Mascota eliminada exitosamente.");
+            System.out.println("Mascota eliminada.");
         } else {
-            System.out.println("No se encontró una mascota con el ID proporcionado.");
+            System.out.println("Mascota no encontrada.");
         }
     }
 }
-
-

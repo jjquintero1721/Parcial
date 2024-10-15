@@ -4,6 +4,7 @@ import org.juan.domain.Mascota;
 
 import java.util.List;
 
+
 public interface MascotaService {
     void registrarMascota(Mascota mascota);
     Mascota obtenerMascotaPorId(int id);
@@ -11,3 +12,5 @@ public interface MascotaService {
     void modificarMascota(Mascota mascota);
     void eliminarMascota(int id);
 }
+
+
